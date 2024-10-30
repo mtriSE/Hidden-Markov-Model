@@ -10,6 +10,9 @@ from probability_matrix import ProbabilityMatrix
 from probability_vector import ProbabilityVector
 import os
 
+from gamma import HiddenMarkovLayer
+from model import HiddenMarkovModel
+
 
 def test_probability_vector():
     a1 = ProbabilityVector({'rain': 0.7, 'sun': 0.3})
@@ -195,7 +198,18 @@ def test_decoding():
     df['score'] = scores
     print(df.head(10).reset_index())
 
+def test_model():
+    np.random.seed(42)
 
+    observations = ['3L', '2M', '1S', '3L', '3L', '3L']
+
+    states = ['1H', '2C']
+    observables = ['1S', '2M', '3L']
+
+    hml = HiddenMarkovLayer.initialize(states, observables)
+    hmm = HiddenMarkovModel(hml)
+
+    hmm.train(observations, 25)
 
 def main():
     # test_probability_vector()
@@ -204,7 +218,8 @@ def main():
     # test_hidden_markov_chain_with_forward_algo()
     # test_simulation()
     # test_convergence()
-    test_decoding()
+    # test_decoding()
+    test_model()
 
 
 if __name__ == "__main__":
